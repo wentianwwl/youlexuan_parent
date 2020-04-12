@@ -11,6 +11,8 @@ import com.offcn.sellergoods.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class BrandServiceImpl implements BrandService {
     @Autowired
@@ -54,6 +56,11 @@ public class BrandServiceImpl implements BrandService {
      */
     public TbBrand getBrandById(long id) {
         return brandMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<Map> selectOptionList() {
+        return brandMapper.selectOptionList();
     }
 
     /**

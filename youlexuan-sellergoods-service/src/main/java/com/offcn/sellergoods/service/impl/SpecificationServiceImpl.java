@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.EmptyStackException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 服务实现层
@@ -64,7 +65,7 @@ public class SpecificationServiceImpl implements SpecificationService {
 
 	}
 
-	
+
 	/**
 	 * 修改
 	 */
@@ -85,8 +86,8 @@ public class SpecificationServiceImpl implements SpecificationService {
 		}
 
 
-	}	
-	
+	}
+
 	/**
 	 * 根据ID获取实体
 	 * @param id
@@ -118,25 +119,30 @@ public class SpecificationServiceImpl implements SpecificationService {
 			TbSpecificationOptionExample.Criteria criteria = example.createCriteria();
 			criteria.andSpecIdEqualTo(id);
 			specificationOptionMapper.deleteByExample(example);
-		}		
+		}
 	}
-	
-	
+
+
 		@Override
 	public PageResult findPage(TbSpecification specification, int pageNum, int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
-		
+
 		TbSpecificationExample example=new TbSpecificationExample();
 		Criteria criteria = example.createCriteria();
-		
-		if(specification!=null){			
+
+		if(specification!=null){
 						if(specification.getSpecName()!=null && specification.getSpecName().length()>0){
 				criteria.andSpecNameLike("%"+specification.getSpecName()+"%");
-			}	
+			}
 		}
-		
+
 		Page<TbSpecification> page= (Page<TbSpecification>)specificationMapper.selectByExample(example);
 		return new PageResult(page.getTotal(), page.getResult());
 	}
-	
+
+	@Override
+	public List<Map> selectOptionList() {
+		return specificationMapper.selectOptionList();
+	}
+
 }

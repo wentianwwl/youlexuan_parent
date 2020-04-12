@@ -5,6 +5,7 @@ import com.offcn.group.Specification;
 import com.offcn.pojo.TbSpecification;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 服务层接口
@@ -18,8 +19,8 @@ public interface SpecificationService {
 	 * @return
 	 */
 	public List<TbSpecification> findAll();
-	
-	
+
+
 	/**
 	 * 返回分页列表
 	 * @return
@@ -60,5 +61,10 @@ public interface SpecificationService {
 	 * @return
 	 */
 	public PageResult findPage(TbSpecification specification, int pageNum, int pageSize);
-	
+
+	/**
+	 * 查询模板页规格下拉列表
+	 * @return
+	 */
+    List<Map> selectOptionList();
 }

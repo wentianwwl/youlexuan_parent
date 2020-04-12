@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/brand")
 public class BrandController {
@@ -81,5 +84,14 @@ public class BrandController {
             e.printStackTrace();
             return new Result(false,"删除失败！");
         }
+    }
+
+    /**
+     * 模板页品牌下拉列表
+     * @return
+     */
+    @RequestMapping("selectOptionList")
+    public List<Map> selectOptionList(){
+        return brandService.selectOptionList();
     }
 }

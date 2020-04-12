@@ -4,6 +4,7 @@ import com.offcn.entity.PageResult;
 import com.offcn.pojo.TbBrand;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BrandService {
     /**
@@ -38,4 +39,10 @@ public interface BrandService {
      * @param ids
      */
     public void deleteBrand(Long[] ids);
+
+    /**
+     * 模板页查询品牌下拉列表
+     * @return
+     */
+    List<Map> selectOptionList();
 }

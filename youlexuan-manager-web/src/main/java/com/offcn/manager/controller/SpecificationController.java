@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * controller
@@ -23,7 +24,7 @@ public class SpecificationController {
 
 	@Reference
 	private SpecificationService specificationService;
-	
+
 	/**
 	 * 返回全部列表
 	 * @return
@@ -32,8 +33,8 @@ public class SpecificationController {
 	public List<TbSpecification> findAll(){
 		return specificationService.findAll();
 	}
-	
-	
+
+
 	/**
 	 * 返回全部列表
 	 * @return
@@ -42,7 +43,7 @@ public class SpecificationController {
 	public PageResult findPage(int page, int rows){
 		return specificationService.findPage(page, rows);
 	}
-	
+
 	/**
 	 * 增加
 	 * @param specification
@@ -58,7 +59,7 @@ public class SpecificationController {
 			return new Result(false, "增加失败");
 		}
 	}
-	
+
 	/**
 	 * 修改
 	 * @param specification
@@ -73,8 +74,8 @@ public class SpecificationController {
 			e.printStackTrace();
 			return new Result(false, "修改失败");
 		}
-	}	
-	
+	}
+
 	/**
 	 * 获取实体
 	 * @param id
@@ -82,9 +83,9 @@ public class SpecificationController {
 	 */
 	@RequestMapping("/findOne")
 	public Specification findOne(Long id){
-		return specificationService.findOne(id);		
+		return specificationService.findOne(id);
 	}
-	
+
 	/**
 	 * 批量删除
 	 * @param ids
@@ -100,7 +101,7 @@ public class SpecificationController {
 			return new Result(false, "删除失败");
 		}
 	}
-	
+
 		/**
 	 * 查询+分页
 	 * @param brand
@@ -110,7 +111,15 @@ public class SpecificationController {
 	 */
 	@RequestMapping("/search")
 	public PageResult search(@RequestBody TbSpecification specification, int page, int rows  ){
-		return specificationService.findPage(specification, page, rows);		
+		return specificationService.findPage(specification, page, rows);
 	}
-	
+
+	/**
+	 * 查询模板页规格下拉列表
+	 * @return
+	 */
+	@RequestMapping("selectOptionList")
+	public List<Map> selectOptionList(){
+		return specificationService.selectOptionList();
+	}
 }
