@@ -29,7 +29,10 @@ app.service('sellerService',function($http){
 	this.search=function(page,rows,searchEntity){
 		return $http.post('../seller/search.do?page='+page+"&rows="+rows, searchEntity);
 	}
-	this.updateSta=function (sellerId, status) {
-		return $http.get("../seller/updateStatus.do?sellerId="+sellerId+"&status="+status);
+	/**
+	 * 申请后保存商家信息
+	 */
+	this.add=function (entity) {
+		return $http.post("../seller/add.do",entity);
 	}
 });

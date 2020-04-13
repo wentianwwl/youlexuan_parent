@@ -1,4 +1,4 @@
-package com.offcn.manager.controller;
+package com.offcn.shop.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.offcn.entity.PageResult;
@@ -7,7 +7,6 @@ import com.offcn.pojo.TbSeller;
 import com.offcn.sellergoods.service.SellerService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -81,7 +80,7 @@ public class SellerController {
 	 * @return
 	 */
 	@RequestMapping("/findOne")
-	public TbSeller findOne(@RequestParam("id") String sellerId){
+	public TbSeller findOne(String sellerId){
 		return sellerService.findOne(sellerId);		
 	}
 	
@@ -112,22 +111,5 @@ public class SellerController {
 	public PageResult search(@RequestBody TbSeller seller, int page, int rows  ){
 		return sellerService.findPage(seller, page, rows);		
 	}
-
-	/**
-	 * 审核后改变状态
-	 * @param sellerId
-	 * @param status
-	 * @return
-	 */
-	@RequestMapping("updateStatus")
-	public Result updateStatus(String sellerId, String status){
-		try {
-			sellerService.updateStatus(sellerId, status);
-			return new Result(true, "成功");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new Result(false, "失败");
-		}
-	}
-
+	
 }

@@ -4,6 +4,7 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/youlexuan-manager-web" />
     <file type="web" url="file://$PROJECT_DIR$/youlexuan-sellergoods-service" />
+    <file type="web" url="file://$PROJECT_DIR$/youlexuan-shop-web" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
