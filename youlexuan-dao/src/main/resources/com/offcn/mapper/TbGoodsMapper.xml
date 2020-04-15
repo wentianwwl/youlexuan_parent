@@ -114,6 +114,9 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.offcn.pojo.TbGoods">
+        <selectKey keyProperty="id" keyColumn="id" order="AFTER" resultType="long">
+          SELECT LAST_INSERT_ID() AS id
+        </selectKey>
     insert into tb_goods (id, seller_id, goods_name, 
       default_item_id, audit_status, is_marketable, 
       brand_id, caption, category1_id, 

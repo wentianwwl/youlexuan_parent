@@ -3,6 +3,7 @@ package com.offcn.manager.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.offcn.entity.PageResult;
 import com.offcn.entity.Result;
+import com.offcn.group.Goods;
 import com.offcn.pojo.TbGoods;
 import com.offcn.sellergoods.service.GoodsService;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,7 +49,7 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public Result add(@RequestBody TbGoods goods){
+	public Result add(@RequestBody Goods goods){
 		try {
 			goodsService.add(goods);
 			return new Result(true, "增加成功");

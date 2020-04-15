@@ -46,12 +46,12 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
         </dependency>
-        <!--mybatis分页插件 pegeHelper-->
+       <!-- mybatis分页插件 pegeHelper-->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper</artifactId>
         </dependency>
-        <!-- Mybatis -->
+        <!-- Mybatis-->
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>

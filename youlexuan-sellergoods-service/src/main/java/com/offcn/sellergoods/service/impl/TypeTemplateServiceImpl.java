@@ -12,6 +12,7 @@ import com.offcn.sellergoods.service.TypeTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 服务实现层
@@ -102,5 +103,14 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 		Page<TbTypeTemplate> page= (Page<TbTypeTemplate>)typeTemplateMapper.selectByExample(example);
 		return new PageResult(page.getTotal(), page.getResult());
 	}
-	
+
+	/**
+	 * 获取模板下拉列表
+	 * @return
+	 */
+    @Override
+    public List<Map> selectOptionList() {
+        return typeTemplateMapper.selectOptionList();
+    }
+
 }

@@ -1,5 +1,5 @@
- //控制层 
-app.controller('goodsController' ,function($scope,$controller   ,goodsService){	
+ //控制层
+ app.controller('goodsController' ,function($scope,$controller   ,goodsService,uploadService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -76,5 +76,51 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 			}			
 		);
 	}
-    
-});	
+	//保存
+	$scope.add=function () {
+		$scope.entity.goodsDesc.introduction=editor.html();
+		goodsService.add($scope.entity).success(
+			function (response) {
+				if (response.success){
+					alert("保存成功");
+					$scope.entity={};
+					editor.html('');
+				}else{
+					alert(response.message);
+				}
+			}
+		)
+	}
+	 /**
+	  * 上传图片
+	  */
+	 $scope.uploadFile = function () {
+		 uploadService.uploadFile().success(
+		 	function (response) {
+				if (response.success){
+					$scope.image_entity.url=response.message;
+				}else{
+					alert(response.message);
+				}
+			}
+		 ).error(
+		 	function () {
+				alert("上传发生错误");
+			}
+		 )
+	 }
+	 /**
+	  * 保存图片：就是讲图片的颜色和url路径添加到entity对象
+	  * 用于保存
+	  */
+	 $scope.entity={goods:{},goodsDesc:{itemImages:[]}};
+	 $scope.add_image_entity=function () {
+		 $scope.entity.goodsDesc.itemImages.push($scope.image_entity);
+	 }
+	 /**
+	  * 在图片列表中移除图片
+	  */
+	 $scope.remove_image_entity=function (index) {
+		 $scope.entity.goodsDesc.itemImages.splice(index,1);
+	 }
+ });

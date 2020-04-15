@@ -10,6 +10,6 @@
 
     <dubbo:protocol name="dubbo" port="20881" />
     <dubbo:application name="youlexuan-sellergoods-service"/>
-    <dubbo:registry address="zookeeper://192.168.52.132:2181"/>
+    <dubbo:registry address="zookeeper://192.168.188.128:2181"/>
     <dubbo:annotation package="com.offcn.sellergoods.service.impl" />
 </beans>

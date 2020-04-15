@@ -26,7 +26,15 @@
     </mvc:annotation-driven>
     <!-- 引用dubbo 服务 -->
     <dubbo:application name="youlexuan-shop-web" />
-    <dubbo:registry address="zookeeper://192.168.52.132:2181"/>
+    <dubbo:registry address="zookeeper://192.168.188.128:2181"/>
     <dubbo:annotation package="com.offcn.shop.controller" />
 
+    <!--加载属性文件-->
+    <context:property-placeholder location="classpath:application.properties"/>
+    <!--配置文件上传解析器-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8"/>
+        <!--设置文件上传的最大值5MB-->
+        <property name="maxUploadSize" value="5242880" />
+    </bean>
 </beans>

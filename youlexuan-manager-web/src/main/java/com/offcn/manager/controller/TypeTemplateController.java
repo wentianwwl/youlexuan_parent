@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * controller
@@ -111,5 +112,14 @@ public class TypeTemplateController {
 	public PageResult search(@RequestBody TbTypeTemplate typeTemplate, int page, int rows  ){
 		return typeTemplateService.findPage(typeTemplate, page, rows);		
 	}
-	
+
+	/**
+	 * 获取模板下拉列表
+	 * @return
+	 */
+	@RequestMapping("selectOptionList")
+	public List<Map> selectOptionList(){
+		return typeTemplateService.selectOptionList();
+	}
+
 }

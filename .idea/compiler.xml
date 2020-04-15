@@ -8,9 +8,9 @@
         <outputRelativeToContentRoot value="true" />
         <module name="youlexuan-dao" />
         <module name="youlexuan-pojo" />
+        <module name="youlexuan-shop-web" />
         <module name="youlexuan-manager-web" />
         <module name="youlexuan-sellergoods-interface" />
-        <module name="youlexuan-shop-web" />
         <module name="youlexuan-common" />
         <module name="youlexuan-sellergoods-service" />
       </profile>

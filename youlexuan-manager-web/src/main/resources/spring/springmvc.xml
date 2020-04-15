@@ -27,6 +27,6 @@
     <!-- 引用dubbo 服务 -->
     <dubbo:consumer timeout="30000" />
     <dubbo:application name="youlexuan-manager-web" />
-    <dubbo:registry address="zookeeper://192.168.52.132:2181"/>
+    <dubbo:registry address="zookeeper://192.168.188.128:2181"/>
     <dubbo:annotation package="com.offcn.manager.controller" />
 </beans>
