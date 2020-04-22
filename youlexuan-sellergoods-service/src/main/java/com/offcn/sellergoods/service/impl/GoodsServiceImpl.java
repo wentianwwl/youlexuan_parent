@@ -11,6 +11,7 @@ import com.offcn.pojo.*;
 import com.offcn.pojo.TbGoodsExample.Criteria;
 import com.offcn.sellergoods.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.security.auth.login.CredentialException;
 import javax.swing.*;
@@ -24,6 +25,7 @@ import java.util.Map;
  *
  */
 @Service
+@Transactional
 public class GoodsServiceImpl implements GoodsService {
 
 	@Autowired
@@ -172,12 +174,14 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 	/**
-	 * 批量删除
+	 * 批量删除(商品表逻辑删除,将is_delete字段设置为1)
 	 */
 	@Override
 	public void delete(Long[] ids) {
 		for(Long id:ids){
-			goodsMapper.deleteByPrimaryKey(id);
+			TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
+			tbGoods.setIsDelete("1");
+			goodsMapper.updateByPrimaryKey(tbGoods);
 		}		
 	}
 	
@@ -188,7 +192,7 @@ public class GoodsServiceImpl implements GoodsService {
 		
 		TbGoodsExample example=new TbGoodsExample();
 		Criteria criteria = example.createCriteria();
-		
+		criteria.andIsDeleteIsNull();//非删除状态
 		if(goods!=null){			
 						if(goods.getSellerId()!=null && goods.getSellerId().length()>0){
 				//criteria.andSellerIdLike("%"+goods.getSellerId()+"%");
@@ -216,5 +220,32 @@ public class GoodsServiceImpl implements GoodsService {
 		Page<TbGoods> page= (Page<TbGoods>)goodsMapper.selectByExample(example);
 		return new PageResult(page.getTotal(), page.getResult());
 	}
-	
+
+	/**
+	 * 商品审核,更新商品的审核状态
+	 * @param ids 页面通过复选共选中的ids
+	 * @param status 状态 1 已审核 2 驳回
+	 */
+	@Override
+	public void updateStatus(Long[] ids, String status) {
+		for (Long id : ids) {
+			//1.根据商品id获取商品信息
+			TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
+			//2.修改商品的状态
+			tbGoods.setAuditStatus(status);
+			//3.更改商品
+			goodsMapper.updateByPrimaryKey(tbGoods);
+
+			//修改spu对应的sku条目的状态
+			TbItemExample example = new TbItemExample();
+			TbItemExample.Criteria criteria = example.createCriteria();
+			criteria.andGoodsIdEqualTo(id);
+			List<TbItem> tbItems = itemMapper.selectByExample(example);
+			for (TbItem tbItem : tbItems) {
+				tbItem.setStatus(status);
+				itemMapper.updateByPrimaryKey(tbItem);
+			}
+		}
+	}
+
 }

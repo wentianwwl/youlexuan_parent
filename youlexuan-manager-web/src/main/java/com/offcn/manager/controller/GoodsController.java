@@ -65,7 +65,7 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/update")
-	public Result update(@RequestBody TbGoods goods){
+	public Result update(@RequestBody Goods goods){
 		try {
 			goodsService.update(goods);
 			return new Result(true, "修改成功");
@@ -112,5 +112,20 @@ public class GoodsController {
 	public PageResult search(@RequestBody TbGoods goods, int page, int rows  ){
 		return goodsService.findPage(goods, page, rows);		
 	}
-	
+
+	/**
+	 * 商品审核,更新商品的审核状态
+	 * @param ids 页面通过复选共选中的ids
+	 * @param status 状态 1 已审核 2 驳回
+	 */
+	@RequestMapping("updateStatus")
+	public Result updateStatus(Long[] ids,String status){
+		try {
+			goodsService.updateStatus(ids,status);
+			return new Result(true,"成功");
+		}catch (Exception e){
+			e.printStackTrace();
+			return new Result(false,"失败");
+		}
+	}
 }

@@ -84,7 +84,11 @@
         <artifactId>servlet-api</artifactId>
         <scope>provided</scope>
     </dependency>
-
+        <!-- 连接池 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.offcn</groupId>
             <artifactId>youlexuan-pojo</artifactId>

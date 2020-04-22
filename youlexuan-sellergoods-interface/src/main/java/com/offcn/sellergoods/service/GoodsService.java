@@ -60,5 +60,11 @@ public interface GoodsService {
 	 * @return
 	 */
 	public PageResult findPage(TbGoods goods, int pageNum, int pageSize);
-	
+
+	/**
+	 *
+	 * @param ids 页面通过复选共选中的ids
+	 * @param status 状态 1 已审核 2 驳回
+	 */
+	public void updateStatus(Long[] ids, String status);
 }
