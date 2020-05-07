@@ -10,6 +10,7 @@ import com.offcn.pojo.TbItemCatExample;
 import com.offcn.pojo.TbItemCatExample.Criteria;
 import com.offcn.sellergoods.service.ItemCatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.List;
 
@@ -23,6 +24,9 @@ public class ItemCatServiceImpl implements ItemCatService {
 
 	@Autowired
 	private TbItemCatMapper itemCatMapper;
+
+	@Autowired
+	private RedisTemplate redisTemplate;
 	
 	/**
 	 * 查询全部
@@ -108,6 +112,16 @@ public class ItemCatServiceImpl implements ItemCatService {
 		TbItemCatExample example = new TbItemCatExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andParentIdEqualTo(parentId);
+		//进入商品分类列表时候,把全部的分类数据存储到redis中
+		List<TbItemCat> all = findAll();
+		if (all != null && all.size() > 0) {
+			for (TbItemCat tbItemCat : all) {
+				if (tbItemCat != null && tbItemCat.getName() != null && tbItemCat.getTypeId() > 0) {
+					redisTemplate.boundHashOps("itemCat").put(tbItemCat.getName(),tbItemCat.getTypeId());
+				}
+			}
+			System.out.println("更新全部分类数据到redis缓存");
+		}
 		return itemCatMapper.selectByExample(example);
 	}
 

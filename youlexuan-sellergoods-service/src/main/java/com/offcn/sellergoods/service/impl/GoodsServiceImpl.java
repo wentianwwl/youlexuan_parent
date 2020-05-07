@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.security.auth.login.CredentialException;
 import javax.swing.*;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -182,7 +183,13 @@ public class GoodsServiceImpl implements GoodsService {
 			TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
 			tbGoods.setIsDelete("1");
 			goodsMapper.updateByPrimaryKey(tbGoods);
-		}		
+		}
+		//修改商品sku状态为删除
+		List<TbItem> listItem = findItemListByGoodsIdandStatus(ids, "1");
+		for (TbItem item : listItem) {
+			item.setStatus("3");
+			itemMapper.updateByPrimaryKey(item);
+		}
 	}
 	
 	
@@ -247,5 +254,20 @@ public class GoodsServiceImpl implements GoodsService {
 			}
 		}
 	}
+
+	/**
+	 * 根据商品的id和status,查出已经审核通过的商品对应的items
+	 * @param goodsIds
+	 * @param status
+	 * @return
+	 */
+    @Override
+    public List<TbItem> findItemListByGoodsIdandStatus(Long[] goodsIds, String status) {
+		TbItemExample example = new TbItemExample();
+		TbItemExample.Criteria criteria = example.createCriteria();
+		criteria.andGoodsIdIn(Arrays.asList(goodsIds));
+		criteria.andStatusEqualTo(status);
+		return itemMapper.selectByExample(example);
+    }
 
 }

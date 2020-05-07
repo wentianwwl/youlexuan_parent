@@ -14,6 +14,7 @@ import com.offcn.pojo.TbTypeTemplateExample;
 import com.offcn.pojo.TbTypeTemplateExample.Criteria;
 import com.offcn.sellergoods.service.TypeTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.security.auth.login.CredentialException;
 import java.util.List;
@@ -31,6 +32,9 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 	private TbTypeTemplateMapper typeTemplateMapper;
 	@Autowired
 	private TbSpecificationOptionMapper specificationOptionMapper;
+
+	@Autowired
+	private RedisTemplate redisTemplate;
 	
 	/**
 	 * 查询全部
@@ -108,6 +112,7 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 		}
 		
 		Page<TbTypeTemplate> page= (Page<TbTypeTemplate>)typeTemplateMapper.selectByExample(example);
+			saveToRedis();//将数据存入redis缓存中
 		return new PageResult(page.getTotal(), page.getResult());
 	}
 
@@ -130,22 +135,43 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 		//1.根据模板id查处对应的模板对象
 		TbTypeTemplate tbTypeTemplate = typeTemplateMapper.selectByPrimaryKey(id);
 		//2.从模板对象中取出规格属性，封装成Map结合
-		List<Map> list = JSON.parseArray(tbTypeTemplate.getSpecIds(), Map.class);
-		//3.遍历模板属性集合
-		for (Map map : list) {
-			/**
-			 因为map中的数值只能保存Integer类型的，因此Object类型不能直接转换为Long类型的;
-			 所有要先转换为Integer类型的，然后再转换成Long类型的。
-			 */
+		if (tbTypeTemplate.getSpecIds() != null){
+			List<Map> list = JSON.parseArray(tbTypeTemplate.getSpecIds(), Map.class);
+			//3.遍历模板属性集合
+			for (Map map : list) {
+				/**
+				 因为map中的数值只能保存Integer类型的，因此Object类型不能直接转换为Long类型的;
+				 所有要先转换为Integer类型的，然后再转换成Long类型的。
+				 */
 
-			Long specid = new Long((Integer) map.get("id"));
-			TbSpecificationOptionExample example = new TbSpecificationOptionExample();
-			TbSpecificationOptionExample.Criteria criteria = example.createCriteria();
-			criteria.andSpecIdEqualTo(specid);
-			List<TbSpecificationOption> specificationOptionList = specificationOptionMapper.selectByExample(example);
-			map.put("options",specificationOptionList);
+				Long specid = new Long((Integer) map.get("id"));
+				TbSpecificationOptionExample example = new TbSpecificationOptionExample();
+				TbSpecificationOptionExample.Criteria criteria = example.createCriteria();
+				criteria.andSpecIdEqualTo(specid);
+				List<TbSpecificationOption> specificationOptionList = specificationOptionMapper.selectByExample(example);
+				map.put("options",specificationOptionList);
+			}
+			return list;
 		}
-        return list;
+		return null;
+
     }
+	/**
+	 * 将数据存入缓存中
+	 */
+	private void saveToRedis(){
+		//获取模板数据
+		List<TbTypeTemplate> typeTemplateList = findAll();
+		//循环模板
+		for (TbTypeTemplate tbTypeTemplate : typeTemplateList) {
+			//存储品牌列表
+			List<Map> brandList = JSON.parseArray(tbTypeTemplate.getBrandIds(), Map.class);
+			redisTemplate.boundHashOps("brandList").put(tbTypeTemplate.getId(),brandList);
+			//存储规格列表
+			List<Map> specList = findSpecList(tbTypeTemplate.getId());//根据模板id查询规格列表,包括规格选项
+			redisTemplate.boundHashOps("specList").put(tbTypeTemplate.getId(),specList);
+		}
+		System.out.println("更新全部品牌和规格数据(包括规格项)到redis缓存中");
+	}
 
 }

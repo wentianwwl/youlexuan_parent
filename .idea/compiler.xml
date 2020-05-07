@@ -6,13 +6,23 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="youlexuan-dao" />
-        <module name="youlexuan-pojo" />
-        <module name="youlexuan-shop-web" />
         <module name="youlexuan-manager-web" />
-        <module name="youlexuan-sellergoods-interface" />
-        <module name="youlexuan-common" />
         <module name="youlexuan-sellergoods-service" />
+        <module name="youlexuan-pojo" />
+        <module name="youlexuan-common" />
+        <module name="youlexuan-content-service" />
+        <module name="youlexuan_portal_web" />
+        <module name="youlexuan-sellergoods-interface" />
+        <module name="youlexuan-page-web" />
+        <module name="youlexuan-search-web" />
+        <module name="youlexuan-search-service" />
+        <module name="youlexuan-content-interface" />
+        <module name="youlexuan-dao" />
+        <module name="youlexuan-page-interface" />
+        <module name="youlexuan-page-service" />
+        <module name="youlexuan-search-interface" />
+        <module name="youlexuan-solr-util" />
+        <module name="youlexuan-shop-web" />
       </profile>
     </annotationProcessing>
   </component>
